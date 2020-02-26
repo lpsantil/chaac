@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: List
+items:
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    labels:
+      build: chaac
+    name: ubi8-minimal
+  spec:
+    lookupPolicy:
+      local: false
+    tags:
+    - annotations:
+        openshift.io/imported-from: registry.redhat.io/ubi8/ubi-minimal
+      from:
+        kind: DockerImage
+        name: registry.redhat.io/ubi8/ubi-minimal
+      importPolicy: {}
+      name: latest
+      referencePolicy:
+        type: Source
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      build: chaac-builder
+    name: chaac-builder
+  spec:
+    failedBuildsHistoryLimit: 5
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: chaac:latest
+    postCommit: {}
+    resources: {}
+    runPolicy: Serial
+    source:
+      git:
+        ref: master
+        uri: https://github.com/lpsantil/chaac.git
+      type: Git
+    strategy:
+      dockerStrategy:
+        from:
+          kind: ImageStreamTag
+          name: ubi8-minimal:latest
+      type: Docker
+    successfulBuildsHistoryLimit: 5
+    triggers:
+    - type: ConfigChange
+    - imageChange:
+      type: ImageChange
+- apiVersion: v1
+  kind: ServiceAccount
+  metadata:
+    name: chaac-static-uid
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    labels:
+      build: chaac
+    name: chaac
+  spec:
+    lookupPolicy:
+      local: false
+

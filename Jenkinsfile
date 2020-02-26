@@ -33,6 +33,8 @@ pipeline {
     // Checkout source code
     // This is required as Pipeline code is originally checkedout to
     // Jenkins Master but this will also pull this same code to this slave
+
+/*
     stage('Git Checkout') {
       steps {
         // Turn off Git's SSL cert check, uncomment if needed
@@ -40,12 +42,26 @@ pipeline {
         git url: "${APPLICATION_SOURCE_REPO}", branch: "${APPLICATION_SOURCE_REF}"
       }
     }
+*/
 
-    // Run Maven build, skipping tests
-    stage('Build'){
-      steps {
-        sh "echo mvn -B clean install -DskipTests=true -f ${POM_FILE}"
-      }
-    }
+    // Make chaac-builder bc, chaac is, chaac sa
+    // Make chaac-deployer bc
+    // Make chaac-passwd bc
+    // Make chaac-clean bc
+    stage( 'Provisioner' ){}
+    // Run chaac-builder bc
+    stage( 'Builder' ){}
+    // Run chaac-deployer bc,
+    // Create new chaac-USER-dc, chaac-USER-svc, chaac-USER-rt,
+    // Patch chaac-USER-dc 
+    // Annotate chaac-USER-rt
+    stage( 'Deployer' ){}
+    // Set env chaac-USER-dc 
+    stage( 'Password Updater' ){}
+    // Set env chaac-USER-dc 
+    stage( 'Password Reset' ){}
+    // Delete chaac-USER-dc, chaac-USER-svc, chaac-USER-rt,
+    stage( 'Cleaner' ){}
+
   }
 }
