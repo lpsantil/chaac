@@ -46,5 +46,5 @@ pipeline {
         sh "echo mvn -B clean install -DskipTests=true -f ${POM_FILE}"
       }
     }
-
+  }
 }
