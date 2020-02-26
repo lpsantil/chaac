@@ -47,8 +47,16 @@ pipeline {
     // Make chaac-builder bc, chaac is, chaac sa
     // Make chaac-deployer bc
     // Make chaac-passwd bc
+    // Make chaac-reset bc
     // Make chaac-clean bc
-    stage( 'Provisioner' ){}
+    stage( 'Provisioner' )
+    {
+       steps
+       {
+          sh "oc apply -f templates/provision.yaml"
+       }
+    }
+/*
     // Run chaac-builder bc
     stage( 'Builder' ){}
     // Run chaac-deployer bc,
@@ -62,6 +70,6 @@ pipeline {
     stage( 'Password Reset' ){}
     // Delete chaac-USER-dc, chaac-USER-svc, chaac-USER-rt,
     stage( 'Cleaner' ){}
-
+*/
   }
 }
